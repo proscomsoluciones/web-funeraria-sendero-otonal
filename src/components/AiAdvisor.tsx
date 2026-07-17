@@ -17,7 +17,11 @@ interface FAQEntry {
 
 const FAQ_DATABASE: FAQEntry[] = [
   {
-    keywords: ["cuota", "mortuoria", "afp", "ips", "fonasa", "isapre", "monto", "15 uf", "bono", "cobrar", "seguro"],
+    keywords: ["seguro de vida", "poliza", "póliza", "aseguradora", "seguro privado"],
+    response: "El seguro de vida privado es distinto de la Cuota Mortuoria: mientras la Cuota Mortuoria es un beneficio estatal financiado por la AFP o el IPS, el seguro de vida es una póliza privada contratada en una aseguradora o a través de un banco. Para cobrarlo, debes contactar directamente a la compañía aseguradora con el Certificado de Defunción y la póliza vigente; nosotros podemos orientarte en la obtención de los documentos necesarios para ese trámite."
+  },
+  {
+    keywords: ["cuota", "mortuoria", "afp", "ips", "fonasa", "isapre", "monto", "15 uf", "bono", "cobrar"],
     response: "La Cuota Mortuoria es un beneficio de la seguridad social en Chile para cubrir los gastos funerarios. Equivale a un tope de 15 UF (aproximadamente $570.000 CLP actuales). Se financia con los fondos de pensiones (AFP) o a través del IPS (ex INP). En Sendero Otoñal gestionamos este trámite legal directamente y lo rebajamos del costo de tu servicio para tu tranquilidad familiar."
   },
   {
@@ -71,6 +75,50 @@ const FAQ_DATABASE: FAQEntry[] = [
   {
     keywords: ["posesion efectiva", "posesión efectiva", "herencia", "testamento", "despues del funeral", "después del funeral", "bienes"],
     response: "Al concluir el funeral, para poder disponer de los bienes, vehículos o cuentas del fallecido, la familia debe tramitar la Posesión Efectiva (en el Registro Civil si no existe testamento). En Sendero Otoñal orientamos a los familiares sobre los pasos iniciales y hacemos entrega de las copias del Certificado de Defunción Todo Trámite indispensables para este proceso legal."
+  },
+  {
+    keywords: ["duelo", "psicologo", "psicólogo", "grupo de apoyo", "como sobrellevar", "cómo sobrellevar", "explicar a mis hijos", "tristeza", "perdida", "pérdida", "acompañamiento emocional", "como afrontar", "cómo afrontar"],
+    response: "Es completamente natural sentir dolor, confusión o incluso vacío tras una pérdida; no existe una forma \"correcta\" de vivir el duelo y tomarse el tiempo necesario es válido. Buscar apoyo en familiares cercanos, grupos de duelo o acompañamiento psicológico puede ayudar a procesar estas emociones con menor angustia. Si necesitas orientación para hablar con niños sobre la muerte de un ser querido o simplemente conversar con alguien, nuestro equipo en Sendero Otoñal está disponible para escucharte y acompañarte, más allá de los trámites."
+  },
+  {
+    keywords: ["nicho", "mausoleo", "cementerio", "arriendo de nicho", "compra de sepultura", "parque del recuerdo", "cementerio general"],
+    response: "La sepultura puede ser en un nicho arrendado (temporal, generalmente renovable cada 5 o 10 años) o en una sepultura o mausoleo en propiedad perpetua, según el cementerio elegido. En Sendero Otoñal te asesoramos en la elección del cementerio o parque más adecuado según tu presupuesto y ubicación, y coordinamos directamente la reserva y el traslado hasta el lugar."
+  },
+  {
+    keywords: ["esquela", "esquelas", "aviso en el diario", "aviso fallecimiento", "publicar aviso"],
+    response: "Podemos ayudarte a redactar y publicar la esquela o aviso de fallecimiento en los principales diarios y portales digitales, informando el nombre del fallecido, horarios del velatorio y lugar de sepultación o cremación a familiares y conocidos. Este servicio puede incluirse dentro de tu plan funerario; consúltanos por las opciones disponibles."
+  },
+  {
+    keywords: ["flores", "corona de flores", "coronas", "arreglo floral", "ramo de flores"],
+    response: "Contamos con coronas y arreglos florales de distintos tamaños y estilos para acompañar el velatorio, los cuales puedes coordinar directamente con nosotros para que estén listos en el horario y lugar de la ceremonia. También podemos recibir y ordenar los arreglos florales enviados por otros familiares o amigos."
+  },
+  {
+    keywords: ["tanatopraxia", "embalsamar", "embalsamamiento", "maquillaje", "vestir al difunto", "presentacion del cuerpo", "presentación del cuerpo"],
+    response: "Nuestro equipo realiza la preparación estética y sanitaria del cuerpo (tanatopraxia), que incluye limpieza, conservación, maquillaje y vestimenta, cuidando la dignidad y el mejor semblante posible del fallecido para la despedida familiar. Puedes traer la ropa que desees que use, o nosotros disponemos de vestimenta apropiada en caso de ser necesario."
+  },
+  {
+    keywords: ["misa", "sacerdote", "pastor evangelico", "pastor evangélico", "otra religion", "otra religión", "servicio religioso", "funeral judio", "funeral judío"],
+    response: "Coordinamos la ceremonia religiosa según la fe y tradición de tu familia, ya sea una misa católica, un servicio evangélico, una ceremonia judía u otro rito, contactando al oficiante correspondiente y adaptando el velatorio a los requerimientos específicos de cada credo."
+  },
+  {
+    keywords: ["finiquito", "pension de viudez", "pensión de viudez", "pension de sobrevivencia", "pensión de sobrevivencia", "orfandad", "avisar al banco", "cancelar tarjetas"],
+    response: "Después del funeral, la familia directa debe realizar algunos trámites adicionales: solicitar el finiquito laboral si el fallecido tenía empleo vigente, tramitar la Pensión de Sobrevivencia o de Viudez/Orfandad ante la AFP correspondiente, y notificar a bancos e instituciones financieras para cancelar tarjetas o cuentas. En Sendero Otoñal te entregamos las copias necesarias del Certificado de Defunción y te orientamos sobre por dónde comenzar cada uno de estos trámites."
+  },
+  {
+    keywords: ["streaming", "transmitir", "transmision en vivo", "transmisión en vivo", "ver por internet", "familiar en el extranjero", "no puede viajar"],
+    response: "Para familiares que no puedan trasladarse, ofrecemos la posibilidad de transmitir la ceremonia o el velatorio en vivo a través de streaming, permitiendo que quienes estén en otra región o en el extranjero puedan acompañar la despedida a distancia. Consúltanos con anticipación para coordinar los detalles técnicos."
+  },
+  {
+    keywords: ["repatriar", "repatriacion", "repatriación", "cuerpo en el extranjero", "consulado", "fallecio en el extranjero", "falleció en el extranjero"],
+    response: "Si el fallecimiento ocurrió en el extranjero, se requiere gestionar la repatriación del cuerpo a través del consulado chileno correspondiente, junto con la documentación sanitaria y de aduana necesaria para el ingreso al país. En Sendero Otoñal te acompañamos en la coordinación de estos trámites internacionales y en la recepción del cuerpo en Chile."
+  },
+  {
+    keywords: ["fallecio mi hijo", "falleció mi hija", "murio mi bebe", "murió mi bebé", "menor de edad fallecio", "menor de edad falleció", "guagua", "bebe fallecido", "bebé fallecido"],
+    response: "Lamentamos profundamente tu pérdida; sabemos que no hay palabras que alivien el dolor de despedir a un hijo o hija. Para estos casos contamos con un trato especialmente cuidadoso y reservado, planes adaptados y acompañamiento humano desde el primer momento. Te invitamos a llamarnos directamente al +569 7891 1807 para que podamos atenderte de inmediato y con la contención que mereces."
+  },
+  {
+    keywords: ["misa de un año", "aniversario", "cabo de año", "recordatorio del fallecimiento", "un año del fallecimiento"],
+    response: "Podemos ayudarte a coordinar una misa o ceremonia de aniversario (cabo de año) para recordar a tu ser querido, ya sea en la iglesia de tu preferencia, en el cementerio o en un espacio familiar. Contáctanos con anticipación para organizar los detalles junto a ti."
   }
 ];
 export default function AiAdvisor() {
@@ -174,7 +222,7 @@ export default function AiAdvisor() {
             <div>
               <p className="text-xs md:text-sm font-bold text-white">Guía y Orientación Legal de Sendero Otoñal</p>
               <p className="text-[10px] md:text-xs opacity-85 font-light">
-                Asistencia de Inteligencia Artificial empática y respetuosa
+                Asistente virtual empático y respetuoso
               </p>
             </div>
           </div>
@@ -197,7 +245,7 @@ export default function AiAdvisor() {
                 >
                   {m.sender === "ai" && (
                     <p className="font-semibold text-[11px] md:text-xs text-brand-olive mb-1">
-                      Sendero Otoñal AI:
+                      Sendero Otoñal:
                     </p>
                   )}
                   {m.text}
@@ -240,11 +288,11 @@ export default function AiAdvisor() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Escribe tu consulta aquí..."
-              className="flex-1 px-4 py-2.5 rounded-xl border border-brand-gold/20 text-xs md:text-sm text-brand-charcoal focus:outline-none focus:border-brand-olive"
+              className="flex-1 px-4 py-2.5 rounded-xl border border-brand-gold/20 text-base text-brand-charcoal focus:outline-none focus:border-brand-olive"
             />
             <button
               type="submit"
-              className="bg-brand-olive hover:bg-brand-olivedark text-white px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition-colors cursor-pointer"
+              className="bg-brand-olive hover:bg-brand-olivedark text-white px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer"
             >
               Enviar
             </button>
