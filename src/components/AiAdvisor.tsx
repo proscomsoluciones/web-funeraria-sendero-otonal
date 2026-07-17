@@ -18,30 +18,61 @@ interface FAQEntry {
 const FAQ_DATABASE: FAQEntry[] = [
   {
     keywords: ["cuota", "mortuoria", "afp", "ips", "fonasa", "isapre", "monto", "15 uf", "bono", "cobrar", "seguro"],
-    response: "La **Cuota Mortuoria** es un beneficio de la seguridad social en Chile para cubrir los gastos funerarios. Equivale a un tope de **15 UF** (aproximadamente $570.000 CLP actuales). Se financia con los fondos de pensiones (AFP) o a través del IPS (ex INP). En Sendero Otoñal gestionamos este trámite legal directamente y lo rebajamos del costo de tu servicio para tu tranquilidad familiar."
+    response: "La Cuota Mortuoria es un beneficio de la seguridad social en Chile para cubrir los gastos funerarios. Equivale a un tope de 15 UF (aproximadamente $570.000 CLP actuales). Se financia con los fondos de pensiones (AFP) o a través del IPS (ex INP). En Sendero Otoñal gestionamos este trámite legal directamente y lo rebajamos del costo de tu servicio para tu tranquilidad familiar."
   },
   {
-    keywords: ["defuncion", "certificado", "inscribir", "registro civil", "pase", "sepultacion", "tramites", "pasos", "muere", "fallece"],
-    response: "Para inscribir una defunción en Chile, se requiere:\n1. **Certificado Médico de Defunción** emitido por el médico de turno o tratante.\n2. **Inscripción en el Registro Civil** (se realiza en las primeras 24 horas).\n3. **Obtención del Pase de Sepultación o Cremación**.\n\nEn Funeraria Sendero Otoñal nos encargamos del 100% de estos trámites ante el Registro Civil y Seremi de Salud sin costo adicional."
+    keywords: ["defuncion", "defunción", "certificado", "inscribir", "registro civil", "pase", "sepultacion", "sepultación", "tramites", "trámites", "pasos", "muere", "fallece"],
+    response: "Para inscribir una defunción en Chile, se requiere:\n1. Certificado Médico de Defunción emitido por el médico de turno o tratante.\n2. Inscripción en el Registro Civil (se realiza en las primeras 24 horas).\n3. Obtención del Pase de Sepultación o Cremación.\n\nEn Funeraria Sendero Otoñal nos encargamos del 100% de estos trámites ante el Registro Civil y Seremi de Salud sin costo adicional."
   },
   {
-    keywords: ["precio", "planes", "costo", "valor", "tarifas", "servicios", "clasico", "estandar", "memorial", "otoñal"],
-    response: "Nuestros planes oficiales del catálogo comienzan desde el **Servicio Clásico ($960.000)** hasta opciones premium de alta gama como el **Servicio Otoñal ($3.290.000)**. Todos incluyen la gestión legal de defunción, preparación de la urna, capilla ardiente, libro de condolencias y carrozas. Puedes revisar los detalles completos en la sección 'Catálogo' y usar el 'Cotizador' interactivo para agregar servicios adicionales."
+    keywords: ["precio", "planes", "costo", "valor", "tarifas", "servicios", "clasico", "clásico", "estandar", "estándar", "memorial", "otoñal", "otoñal"],
+    response: "Nuestros planes oficiales del catálogo comienzan desde el Servicio Clásico ($960.000) hasta opciones premium de alta gama como el Servicio Otoñal ($3.290.000) . Todos incluyen la gestión legal de defunción, preparación de la urna, capilla ardiente, libro de condolencias y carrozas. Puedes revisar los detalles completos en la sección 'Catálogo' y usar el 'Cotizador' interactivo para agregar servicios adicionales."
   },
   {
-    keywords: ["urnas", "casket", "cofres", "madera", "roble", "oregon", "alerce", "urna"],
-    response: "Nuestras urnas y cofres son elaborados a mano utilizando maderas finas y nobles seleccionadas (como Roble Nacional y Pino Oregón). Cuentan con barniz espejo de alto brillo, interiores de raso plisado y terciopelo, herrajes de bronce pulido continuos e incrustaciones artísticas exclusivas. En la sección 'Cofres y Urnas' puedes ver fotos de los modelos."
+    keywords: ["urnas", "casket", "cofres", "madera", "roble", "oregon", "oregón", "alerce", "urna"],
+    response: "Nuestras urnas son elaborados a mano utilizando maderas finas y nobles seleccionadas (como Roble Nacional y Pino Oregón). Cuentan con barniz espejo de alto brillo, interiores de raso plisado y terciopelo, herrajes de bronce pulido continuos e incrustaciones artísticas exclusivas. En la sección 'Cofres y Urnas' puedes ver fotos de los modelos."
   },
   {
-    keywords: ["donde", "ubicacion", "contacto", "telefono", "los andes", "san felipe", "aconcagua", "santiago", "region", "valparaiso", "dirección"],
-    response: "Funeraria Sendero Otoñal atiende de forma directa e inmediata las 24 horas del día en todo el **Valle del Aconcagua (Los Andes, San Felipe y comunas aledañas)**, la **Región de Valparaíso** y la **Región Metropolitana (Santiago)**. Puedes comunicarte directamente al teléfono de urgencias **+569 7891 1807**."
+    keywords: ["donde", "dónde", "ubicacion", "ubicación", "contacto", "telefono", "teléfono", "los andes", "san felipe", "aconcagua", "santiago", "region", "región", "valparaiso", "valparaíso", "dirección", "direccion"],
+    response: "Funeraria Sendero Otoñal atiende de forma directa e inmediata las 24 horas del día en todo el Valle del Aconcagua (Los Andes, San Felipe y comunas aledañas), la Región de Valparaíso y la Región Metropolitana (Santiago). Puedes comunicarte directamente al teléfono de urgencias +569 7891 1807."
   },
   {
-    keywords: ["cremacion", "incinerar", "cenizas", "anfora"],
+    keywords: ["cremacion", "cremación", "incinerar", "cenizas", "anfora", "ánfora"],
     response: "La cremación en Chile requiere de trámites notariales específicos y autorización sanitaria. Se debe contar con una declaración jurada de la familia directa o una manifestación expresa del fallecido en vida. En Sendero Otoñal te brindamos la asesoría legal y nos encargamos de todo el traslado hacia los principales cinerarios del país."
+  },
+  {
+    keywords: ["casa", "hogar", "domicilio", "hospital", "clinica", "clínica", "encontraron", "fallecio en casa", "falleció en casa", "que hacer", "qué hacer"],
+    response: "Si el fallecimiento ocurre en el domicilio, lo primero es contactar a su médico tratante o al servicio de salud de urgencia para certificar el deceso. Si ocurre en un hospital o clínica, el centro asistencial entregará el Certificado Médico de Defunción. En cualquier escenario, comunícate de inmediato a nuestro fono de urgencias (+569 7891 1807) y nuestro personal asistencial se trasladará al lugar para asistirte en todo."
+  },
+  {
+    keywords: ["madrugada", "noche", "24 horas", "247", "festivo", "domingo", "horario", "abierto", "atencion", "atención", "emergencia", "urgencia"],
+    response: "En Funeraria Sendero Otoñal atendemos emergencias e ingresos las 24 horas del día, los 365 días del año, incluyendo horarios nocturnos, madrugadas, domingos y días festivos. Nuestro compromiso es brindarte un apoyo inmediato en el momento que más lo necesitas."
+  },
+  {
+    keywords: ["pagar", "tarjeta", "credito", "crédito", "cuotas", "efectivo", "transferencia", "cheque", "financiamiento", "medios de pago", "formas de pago"],
+    response: "Disponemos de múltiples facilidades de pago para la tranquilidad familiar: transferencias bancarias, efectivo, tarjetas de débito y tarjetas de crédito (pudiendo pactar en las cuotas que te permita tu banco). Adicionalmente, aceptamos la asignación directa de la Cuota Mortuoria de AFP o IPS para rebajarla directamente del saldo final del servicio."
+  },
+  {
+    keywords: ["anticipado", "pre necesidad", "prenecesidad", "en vida", "comprar antes", "prevision", "previsión", "asegurar"],
+    response: "Sí, contamos con planes de Prenecesidad. Comprar un servicio funerario de forma anticipada en vida permite congelar los costos frente a la inflación futura, asegurar la tranquilidad de tus seres queridos y evitar decisiones complejas en momentos de dolor. Consulta por nuestras opciones de financiamiento y convenios de pago programado."
+  },
+  {
+    keywords: ["traer", "traslado", "provincia", "llevar", "carroza", "distancia", "santiago a san felipe", "regiones", "carrozas"],
+    response: "Efectuamos traslados de cuerpos a lo largo de todo Chile. Si tu ser querido falleció en Santiago u otra región y la familia desea traerlo al Valle del Aconcagua, o viceversa, gestionamos los permisos de tránsito del Seremi de Salud correspondientes y coordinamos el transporte seguro en nuestras carrozas panorámicas de larga distancia."
+  },
+  {
+    keywords: ["velatorio", "iglesia", "capilla", "instalacion", "instalación", "sillas", "cafeteria", "cafetería", "velas", "porta cirios", "cirios"],
+    response: "Todos nuestros planes contemplan la instalación completa de la capilla ardiente en el lugar que la familia determine (iglesia, salón comunitario o domicilio particular). Incluimos paramentos, porta-cirios, cirios, crucifijo y libro de condolencias. Según el plan contratado, también se proporciona un set de sillas adicionales y servicio de cafetería para los acompañantes."
+  },
+  {
+    keywords: ["autopsia", "sml", "servicio medico legal", "servicio médico legal", "accidente", "fiscalia", "fiscalía", "retirar", "violenta"],
+    response: "En casos de fallecimiento por causas accidentales, dudosas o violentas, se requiere obligatoriamente la intervención del Servicio Médico Legal (SML) y la Fiscalía. En Funeraria Sendero Otoñal te brindamos asesoría jurídica continua y realizamos los trámites de coordinación para el retiro del cuerpo de forma expedita una vez que las autoridades otorguen la orden de entrega."
+  },
+  {
+    keywords: ["posesion efectiva", "posesión efectiva", "herencia", "testamento", "despues del funeral", "después del funeral", "bienes"],
+    response: "Al concluir el funeral, para poder disponer de los bienes, vehículos o cuentas del fallecido, la familia debe tramitar la Posesión Efectiva (en el Registro Civil si no existe testamento). En Sendero Otoñal orientamos a los familiares sobre los pasos iniciales y hacemos entrega de las copias del Certificado de Defunción Todo Trámite indispensables para este proceso legal."
   }
 ];
-
 export default function AiAdvisor() {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -184,7 +215,7 @@ export default function AiAdvisor() {
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.454 5.709 1.455h.008c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path>
                       </svg>
-                      Contactar Asesor Humano
+                      Contactar por WhatsApp
                     </a>
                   )}
                 </div>

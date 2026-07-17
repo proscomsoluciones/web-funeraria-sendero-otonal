@@ -67,7 +67,7 @@ export default function Header() {
               className="bg-brand-olive/80 text-brand-linen border border-brand-gold/30 px-4 py-2 rounded-full flex items-center gap-1.5 hover:bg-brand-olive transition-colors font-semibold"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-ping"></span>
-              Asesor Legal AI
+              Asistente Virtual
             </a>
           </div>
 
@@ -145,7 +145,7 @@ export default function Header() {
               className="mx-2 bg-brand-olive text-brand-linen border border-brand-gold/30 px-3.5 py-2 rounded-full flex items-center justify-center gap-1.5 hover:bg-brand-olive/80 transition-colors"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-ping"></span>
-              Asesor Legal AI
+              Asistente Virtual
             </a>
           </div>
         )}
