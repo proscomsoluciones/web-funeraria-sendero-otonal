@@ -108,7 +108,7 @@ export default function Footer() {
         href="https://wa.me/56978911807?text=Hola%20Funeraria%20Sendero%20Oto%C3%B1al,%20necesito%20asistencia%20e%20informaci%C3%B3n%20de%20inmediato."
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 left-6 z-50 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl hover:bg-[#20ba5a] transition-all hover:scale-110 active:scale-95 duration-300 group"
+        className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl hover:bg-[#20ba5a] transition-all hover:scale-110 active:scale-95 duration-300 group"
         aria-label="Contactar por WhatsApp"
       >
         {/* Efecto de onda pulsante decorativa */}

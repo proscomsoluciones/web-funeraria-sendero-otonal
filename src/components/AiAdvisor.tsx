@@ -232,15 +232,15 @@ export default function AiAdvisor() {
             {messages.map((m) => (
               <div
                 key={m.id}
-                className={`flex gap-2 max-w-full text-xs md:text-sm ${
-                  m.sender === "user" ? "self-end" : "self-start"
+                className={`flex gap-2 w-full text-xs md:text-sm ${
+                  m.sender === "user" ? "justify-end" : "justify-start"
                 }`}
               >
                 <div
                   className={`p-3 rounded-xl leading-relaxed whitespace-pre-line ${
                     m.sender === "user"
-                      ? "bg-brand-olive text-white rounded-tr-none font-medium"
-                      : "bg-brand-olive/10 text-brand-olivedark rounded-tl-none font-light"
+                      ? "bg-brand-olive text-white rounded-tr-none font-medium max-w-[85%]"
+                      : "bg-brand-olive/10 text-brand-olivedark rounded-tl-none font-light w-full"
                   }`}
                 >
                   {m.sender === "ai" && (
