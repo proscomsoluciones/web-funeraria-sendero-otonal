@@ -110,7 +110,7 @@ export default function Caskets() {
   };
 
   const getWhatsAppLink = (name: string) => {
-    const text = `Hola Funeraria Sendero Otoñal. Estoy viendo su catálogo de cofres y me gustaría cotizar detalles sobre el "${name}".`;
+    const text = `Hola Sendero Otoñal. Estoy viendo su catálogo de Urnas y me gustaría cotizar detalles sobre el "${name}".`;
     return `https://wa.me/56978911807?text=${encodeURIComponent(text)}`;
   };
 
