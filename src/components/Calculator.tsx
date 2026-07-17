@@ -90,7 +90,7 @@ Me gustaría coordinar una asesoría personalizada.`;
               <select
                 value={selectedServiceIdx}
                 onChange={(e) => setSelectedServiceIdx(Number(e.target.value))}
-                className="w-full p-3 rounded-xl border border-brand-gold/20 bg-white text-sm md:text-base text-brand-charcoal focus:outline-none focus:border-brand-olive cursor-pointer"
+                className="w-full p-3 rounded-xl border border-brand-gold/20 bg-white text-base text-brand-charcoal focus:outline-none focus:border-brand-olive cursor-pointer"
               >
                 {BASE_SERVICES.map((srv, idx) => (
                   <option key={srv.name} value={idx}>
