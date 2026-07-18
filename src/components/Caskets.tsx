@@ -1,105 +1,59 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface CasketModel {
   name: string;
-  category: "clasica" | "memorial" | "honor";
-  material: string;
-  finishes: string;
+  category: string;
+  wood_type: string;
+  finish: string;
   price: number;
   features: string[];
+  image_path?: string;
 }
 
-const CASKET_MODELS: CasketModel[] = [
-  {
-    name: "Modelo Clásico",
-    category: "clasica",
-    material: "Madera Nativa",
-    finishes: "Barniz natural semi-brillo, herrajes oscuros",
-    price: 960000,
-    features: ["Interior de raso", "Capilla de luces básica", "Carroza de traslado"],
-  },
-  {
-    name: "Modelo Estándar",
-    category: "clasica",
-    material: "Madera Nativa Seleccionada",
-    finishes: "Barniz brillante, tallados lineales",
-    price: 1290000,
-    features: ["Herrajes dorados", "Interior de raso plisado", "Van de acompañamiento"],
-  },
-  {
-    name: "Modelo Estándar II",
-    category: "clasica",
-    material: "Madera Nativa Roble",
-    finishes: "Barniz de alta resistencia, vetas marcadas",
-    price: 1390000,
-    features: ["Líneas clásicas sobrias", "Interior capitoné", "Van de acompañamiento"],
-  },
-  {
-    name: "Modelo Memorial",
-    category: "memorial",
-    material: "Madera Noble",
-    finishes: "Tono caoba/rojizo profundo, alto brillo",
-    price: 1990000,
-    features: ["Carroza panorámica President", "Adornos de bronce", "Cafetería básica"],
-  },
-  {
-    name: "Modelo Memorial II",
-    category: "memorial",
-    material: "Madera Noble de Roble",
-    finishes: "Tono miel cálido, tallado artesanal en bordes",
-    price: 2190000,
-    features: ["Capilla ardiente con cirios", "Van de apoyo familiar", "Arreglo floral superior"],
-  },
-  {
-    name: "Tradición Familiar",
-    category: "memorial",
-    material: "Cofre de Madera Noble Presidencial",
-    finishes: "Barniz espejo, herrajes dorados continuos",
-    price: 2690000,
-    features: ["Carroza de gala President", "Interior de seda drapeada", "Atención preferencial"],
-  },
-  {
-    name: "Modelo Oregón",
-    category: "honor",
-    material: "Pino Oregón Importado",
-    finishes: "Acabado natural mate sedoso, vetas catedral",
-    price: 2890000,
-    features: ["Estructura reforzada", "Terminaciones finas a mano", "Servicios de cafetería completos"],
-  },
-  {
-    name: "Modelo Oregón II",
-    category: "honor",
-    material: "Pino Oregón Presidencial",
-    finishes: "Tono ocre brillante, molduras de relieve alto",
-    price: 2990000,
-    features: ["Cofre de dos tapas", "Herrajes de bronce pulido", "Doctor para certificación"],
-  },
-  {
-    name: "Modelo Noble",
-    category: "honor",
-    material: "Maderas Finas Exclusivas",
-    finishes: "Brillo espejo piano, interior de terciopelo",
-    price: 3190000,
-    features: ["Diseño señorial de gala", "Carroza panorámica President", "Servicio integral Premium"],
-  },
-  {
-    name: "Modelo Otoñal",
-    category: "honor",
-    material: "Madera Noble Premium Sendero",
-    finishes: "Acabado caoba real, tallado artístico exclusivo",
-    price: 3290000,
-    features: ["Máxima distinción", "Cofre presidencial doble tapa", "Gestión integral personalizada"],
-  },
-];
-
 export default function Caskets() {
+  const [caskets, setCaskets] = useState<CasketModel[]>([]);
   const [filter, setFilter] = useState<"todas" | "clasica" | "memorial" | "honor">("todas");
+  const [apiHost, setApiHost] = useState("http://localhost:8000");
 
-  const filteredCaskets = CASKET_MODELS.filter(
-    (c) => filter === "todas" || c.category === filter
-  );
+  useEffect(() => {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+    // Extraer el host para cargar imágenes
+    try {
+      const urlObj = new URL(apiBaseUrl);
+      setApiHost(urlObj.origin);
+    } catch (e) {
+      // Usar fallback
+    }
+
+    fetch(`${apiBaseUrl}/urns`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const parsed = data.map((u: any) => ({
+            name: u.name,
+            category: u.category,
+            wood_type: u.wood_type || "",
+            finish: u.finish || "",
+            price: Number(u.price),
+            features: typeof u.features === "string" ? JSON.parse(u.features) : (u.features || []),
+            image_path: u.image_path || undefined
+          }));
+          setCaskets(parsed);
+        }
+      })
+      .catch((err) => console.warn("Error cargando urnas desde API, usando local fallback:", err));
+  }, []);
+
+  const filteredCaskets = caskets.filter((c) => {
+    if (filter === "todas") return true;
+    const cat = c.category.toLowerCase();
+    if (filter === "clasica") return cat.includes("clásica") || cat.includes("clasica");
+    if (filter === "memorial") return cat.includes("memorial");
+    if (filter === "honor") return cat.includes("honor");
+    return true;
+  });
 
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat("es-CL", {
@@ -152,55 +106,71 @@ export default function Caskets() {
 
         {/* Grid de Urnas */}
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredCaskets.map((c) => (
-            <div
-              key={c.name}
-              className="bg-white rounded-2xl border border-brand-gold/15 p-5 flex flex-col justify-between hover:shadow-xl hover:border-brand-gold/40 hover:-translate-y-1.5 transition-all duration-300 relative group"
-            >
-              <div>
-                <span className="text-[9px] font-bold text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded uppercase tracking-wider block w-max mb-3">
-                  {c.category === "clasica"
-                    ? "Línea Clásica"
-                    : c.category === "memorial"
-                    ? "Línea Memorial"
-                    : "Línea de Honor"}
-                </span>
+          {filteredCaskets.map((c, index) => {
+            const hasImage = !!c.image_path;
+            const imageUrl = hasImage ? `${apiHost}/storage/${c.image_path}` : null;
 
-                <h3 className="font-serif text-base md:text-lg text-brand-olivedark font-bold mb-1 group-hover:text-brand-olive transition-colors">
-                  {c.name}
-                </h3>
-                <p className="text-xs md:text-sm text-gray-500 font-light mb-1">
-                  <strong>Madera:</strong> {c.material}
-                </p>
-                <p className="text-xs md:text-sm text-gray-500 font-light mb-4">
-                  <strong>Acabados:</strong> {c.finishes}
-                </p>
+            return (
+              <div
+                key={c.name + index}
+                className="bg-white rounded-2xl border border-brand-gold/15 p-5 flex flex-col justify-between hover:shadow-xl hover:border-brand-gold/40 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden"
+              >
+                <div>
+                  <span className="text-[9px] font-bold text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded uppercase tracking-wider block w-max mb-3">
+                    {c.category}
+                  </span>
 
-                <div className="space-y-1.5 border-t border-gray-100 pt-3">
-                  {c.features.map((feat, i) => (
-                    <div key={i} className="flex items-center gap-1.5 text-xs text-gray-600">
-                      <span className="text-brand-gold">✔</span>
-                      <span>{feat}</span>
+                  {imageUrl && (
+                    <div className="w-full h-40 bg-gray-50 rounded-xl overflow-hidden mb-4 border border-brand-gold/5 flex items-center justify-center">
+                      <img
+                        src={imageUrl}
+                        alt={c.name}
+                        width={400}
+                        height={250}
+                        loading="lazy"
+                        decoding="async"
+                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
-                  ))}
+                  )}
+
+                  <h3 className="font-serif text-base md:text-lg text-brand-olivedark font-bold mb-1 group-hover:text-brand-olive transition-colors">
+                    {c.name}
+                  </h3>
+                  <p className="text-xs md:text-sm text-gray-500 font-light mb-1">
+                    <strong>Madera:</strong> {c.wood_type}
+                  </p>
+                  <p className="text-xs md:text-sm text-gray-500 font-light mb-4">
+                    <strong>Acabados:</strong> {c.finish}
+                  </p>
+
+                  <div className="space-y-1.5 border-t border-gray-100 pt-3">
+                    {Array.isArray(c.features) &&
+                      c.features.map((feat, i) => (
+                        <div key={i} className="flex items-center gap-1.5 text-xs text-gray-600">
+                          <span className="text-brand-gold">✔</span>
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-3 border-t border-gray-50 flex items-center justify-between">
+                  <span className="text-base font-bold text-brand-olive font-mono">
+                    {formatCurrency(c.price)}
+                  </span>
+                  <a
+                    href={getWhatsAppLink(c.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs bg-brand-linen hover:bg-brand-gold hover:text-white text-brand-olivedark px-3.5 py-2 rounded-lg font-semibold transition-all border border-brand-gold/30"
+                  >
+                    Cotizar Urna
+                  </a>
                 </div>
               </div>
-
-              <div className="mt-6 pt-3 border-t border-gray-50 flex items-center justify-between">
-                <span className="text-base font-bold text-brand-olive font-mono">
-                  {formatCurrency(c.price)}
-                </span>
-                <a
-                  href={getWhatsAppLink(c.name)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs bg-brand-linen hover:bg-brand-gold hover:text-white text-brand-olivedark px-3.5 py-2 rounded-lg font-semibold transition-all border border-brand-gold/30"
-                >
-                  Cotizar Urna
-                </a>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

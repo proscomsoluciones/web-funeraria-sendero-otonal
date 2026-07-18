@@ -15,113 +15,8 @@ interface FAQEntry {
   response: string;
 }
 
-const FAQ_DATABASE: FAQEntry[] = [
-  {
-    keywords: ["seguro de vida", "poliza", "póliza", "aseguradora", "seguro privado"],
-    response: "El seguro de vida privado es distinto de la Cuota Mortuoria: mientras la Cuota Mortuoria es un beneficio estatal financiado por la AFP o el IPS, el seguro de vida es una póliza privada contratada en una aseguradora o a través de un banco. Para cobrarlo, debes contactar directamente a la compañía aseguradora con el Certificado de Defunción y la póliza vigente; nosotros podemos orientarte en la obtención de los documentos necesarios para ese trámite."
-  },
-  {
-    keywords: ["cuota", "mortuoria", "afp", "ips", "fonasa", "isapre", "monto", "15 uf", "bono", "cobrar"],
-    response: "La Cuota Mortuoria es un beneficio de la seguridad social en Chile para cubrir los gastos funerarios. Equivale a un tope de 15 UF (aproximadamente $570.000 CLP actuales). Se financia con los fondos de pensiones (AFP) o a través del IPS (ex INP). En Sendero Otoñal gestionamos este trámite legal directamente y lo rebajamos del costo de tu servicio para tu tranquilidad familiar."
-  },
-  {
-    keywords: ["defuncion", "defunción", "certificado", "inscribir", "registro civil", "pase", "sepultacion", "sepultación", "tramites", "trámites", "pasos", "muere", "fallece"],
-    response: "Para inscribir una defunción en Chile, se requiere:\n1. Certificado Médico de Defunción emitido por el médico de turno o tratante.\n2. Inscripción en el Registro Civil (se realiza en las primeras 24 horas).\n3. Obtención del Pase de Sepultación o Cremación.\n\nEn Funeraria Sendero Otoñal nos encargamos del 100% de estos trámites ante el Registro Civil y Seremi de Salud sin costo adicional."
-  },
-  {
-    keywords: ["precio", "planes", "costo", "valor", "tarifas", "servicios", "clasico", "clásico", "estandar", "estándar", "memorial", "otoñal", "otoñal"],
-    response: "Nuestros planes oficiales del catálogo comienzan desde el Servicio Clásico ($960.000) hasta opciones premium de alta gama como el Servicio Otoñal ($3.290.000) . Todos incluyen la gestión legal de defunción, preparación de la urna, capilla ardiente, libro de condolencias y carrozas. Puedes revisar los detalles completos en la sección 'Catálogo' y usar el 'Cotizador' interactivo para agregar servicios adicionales."
-  },
-  {
-    keywords: ["urnas", "casket", "cofres", "madera", "roble", "oregon", "oregón", "alerce", "urna"],
-    response: "Nuestras urnas son elaborados a mano utilizando maderas finas y nobles seleccionadas (como Roble Nacional y Pino Oregón). Cuentan con barniz espejo de alto brillo, interiores de raso plisado y terciopelo, herrajes de bronce pulido continuos e incrustaciones artísticas exclusivas. En la sección 'Cofres y Urnas' puedes ver fotos de los modelos."
-  },
-  {
-    keywords: ["donde", "dónde", "ubicacion", "ubicación", "contacto", "telefono", "teléfono", "los andes", "san felipe", "aconcagua", "santiago", "region", "región", "valparaiso", "valparaíso", "dirección", "direccion"],
-    response: "Funeraria Sendero Otoñal atiende de forma directa e inmediata las 24 horas del día en todo el Valle del Aconcagua (Los Andes, San Felipe y comunas aledañas), la Región de Valparaíso y la Región Metropolitana (Santiago). Puedes comunicarte directamente al teléfono de urgencias +569 7891 1807."
-  },
-  {
-    keywords: ["cremacion", "cremación", "incinerar", "cenizas", "anfora", "ánfora"],
-    response: "La cremación en Chile requiere de trámites notariales específicos y autorización sanitaria. Se debe contar con una declaración jurada de la familia directa o una manifestación expresa del fallecido en vida. En Sendero Otoñal te brindamos la asesoría legal y nos encargamos de todo el traslado hacia los principales cinerarios del país."
-  },
-  {
-    keywords: ["casa", "hogar", "domicilio", "hospital", "clinica", "clínica", "encontraron", "fallecio en casa", "falleció en casa", "que hacer", "qué hacer"],
-    response: "Si el fallecimiento ocurre en el domicilio, lo primero es contactar a su médico tratante o al servicio de salud de urgencia para certificar el deceso. Si ocurre en un hospital o clínica, el centro asistencial entregará el Certificado Médico de Defunción. En cualquier escenario, comunícate de inmediato a nuestro fono de urgencias (+569 7891 1807) y nuestro personal asistencial se trasladará al lugar para asistirte en todo."
-  },
-  {
-    keywords: ["madrugada", "noche", "24 horas", "247", "festivo", "domingo", "horario", "abierto", "atencion", "atención", "emergencia", "urgencia"],
-    response: "En Funeraria Sendero Otoñal atendemos emergencias e ingresos las 24 horas del día, los 365 días del año, incluyendo horarios nocturnos, madrugadas, domingos y días festivos. Nuestro compromiso es brindarte un apoyo inmediato en el momento que más lo necesitas."
-  },
-  {
-    keywords: ["pagar", "tarjeta", "credito", "crédito", "cuotas", "efectivo", "transferencia", "cheque", "financiamiento", "medios de pago", "formas de pago"],
-    response: "Disponemos de múltiples facilidades de pago para la tranquilidad familiar: transferencias bancarias, efectivo, tarjetas de débito y tarjetas de crédito (pudiendo pactar en las cuotas que te permita tu banco). Adicionalmente, aceptamos la asignación directa de la Cuota Mortuoria de AFP o IPS para rebajarla directamente del saldo final del servicio."
-  },
-  {
-    keywords: ["anticipado", "pre necesidad", "prenecesidad", "en vida", "comprar antes", "prevision", "previsión", "asegurar"],
-    response: "Sí, contamos con planes de Prenecesidad. Comprar un servicio funerario de forma anticipada en vida permite congelar los costos frente a la inflación futura, asegurar la tranquilidad de tus seres queridos y evitar decisiones complejas en momentos de dolor. Consulta por nuestras opciones de financiamiento y convenios de pago programado."
-  },
-  {
-    keywords: ["traer", "traslado", "provincia", "llevar", "carroza", "distancia", "santiago a san felipe", "regiones", "carrozas"],
-    response: "Efectuamos traslados de cuerpos a lo largo de todo Chile. Si tu ser querido falleció en Santiago u otra región y la familia desea traerlo al Valle del Aconcagua, o viceversa, gestionamos los permisos de tránsito del Seremi de Salud correspondientes y coordinamos el transporte seguro en nuestras carrozas panorámicas de larga distancia."
-  },
-  {
-    keywords: ["velatorio", "iglesia", "capilla", "instalacion", "instalación", "sillas", "cafeteria", "cafetería", "velas", "porta cirios", "cirios"],
-    response: "Todos nuestros planes contemplan la instalación completa de la capilla ardiente en el lugar que la familia determine (iglesia, salón comunitario o domicilio particular). Incluimos paramentos, porta-cirios, cirios, crucifijo y libro de condolencias. Según el plan contratado, también se proporciona un set de sillas adicionales y servicio de cafetería para los acompañantes."
-  },
-  {
-    keywords: ["autopsia", "sml", "servicio medico legal", "servicio médico legal", "accidente", "fiscalia", "fiscalía", "retirar", "violenta"],
-    response: "En casos de fallecimiento por causas accidentales, dudosas o violentas, se requiere obligatoriamente la intervención del Servicio Médico Legal (SML) y la Fiscalía. En Funeraria Sendero Otoñal te brindamos asesoría jurídica continua y realizamos los trámites de coordinación para el retiro del cuerpo de forma expedita una vez que las autoridades otorguen la orden de entrega."
-  },
-  {
-    keywords: ["posesion efectiva", "posesión efectiva", "herencia", "testamento", "despues del funeral", "después del funeral", "bienes"],
-    response: "Al concluir el funeral, para poder disponer de los bienes, vehículos o cuentas del fallecido, la familia debe tramitar la Posesión Efectiva (en el Registro Civil si no existe testamento). En Sendero Otoñal orientamos a los familiares sobre los pasos iniciales y hacemos entrega de las copias del Certificado de Defunción Todo Trámite indispensables para este proceso legal."
-  },
-  {
-    keywords: ["duelo", "psicologo", "psicólogo", "grupo de apoyo", "como sobrellevar", "cómo sobrellevar", "explicar a mis hijos", "tristeza", "perdida", "pérdida", "acompañamiento emocional", "como afrontar", "cómo afrontar"],
-    response: "Es completamente natural sentir dolor, confusión o incluso vacío tras una pérdida; no existe una forma \"correcta\" de vivir el duelo y tomarse el tiempo necesario es válido. Buscar apoyo en familiares cercanos, grupos de duelo o acompañamiento psicológico puede ayudar a procesar estas emociones con menor angustia. Si necesitas orientación para hablar con niños sobre la muerte de un ser querido o simplemente conversar con alguien, nuestro equipo en Sendero Otoñal está disponible para escucharte y acompañarte, más allá de los trámites."
-  },
-  {
-    keywords: ["nicho", "mausoleo", "cementerio", "arriendo de nicho", "compra de sepultura", "parque del recuerdo", "cementerio general"],
-    response: "La sepultura puede ser en un nicho arrendado (temporal, generalmente renovable cada 5 o 10 años) o en una sepultura o mausoleo en propiedad perpetua, según el cementerio elegido. En Sendero Otoñal te asesoramos en la elección del cementerio o parque más adecuado según tu presupuesto y ubicación, y coordinamos directamente la reserva y el traslado hasta el lugar."
-  },
-  {
-    keywords: ["esquela", "esquelas", "aviso en el diario", "aviso fallecimiento", "publicar aviso"],
-    response: "Podemos ayudarte a redactar y publicar la esquela o aviso de fallecimiento en los principales diarios y portales digitales, informando el nombre del fallecido, horarios del velatorio y lugar de sepultación o cremación a familiares y conocidos. Este servicio puede incluirse dentro de tu plan funerario; consúltanos por las opciones disponibles."
-  },
-  {
-    keywords: ["flores", "corona de flores", "coronas", "arreglo floral", "ramo de flores"],
-    response: "Contamos con coronas y arreglos florales de distintos tamaños y estilos para acompañar el velatorio, los cuales puedes coordinar directamente con nosotros para que estén listos en el horario y lugar de la ceremonia. También podemos recibir y ordenar los arreglos florales enviados por otros familiares o amigos."
-  },
-  {
-    keywords: ["tanatopraxia", "embalsamar", "embalsamamiento", "maquillaje", "vestir al difunto", "presentacion del cuerpo", "presentación del cuerpo"],
-    response: "Nuestro equipo realiza la preparación estética y sanitaria del cuerpo (tanatopraxia), que incluye limpieza, conservación, maquillaje y vestimenta, cuidando la dignidad y el mejor semblante posible del fallecido para la despedida familiar. Puedes traer la ropa que desees que use, o nosotros disponemos de vestimenta apropiada en caso de ser necesario."
-  },
-  {
-    keywords: ["misa", "sacerdote", "pastor evangelico", "pastor evangélico", "otra religion", "otra religión", "servicio religioso", "funeral judio", "funeral judío"],
-    response: "Coordinamos la ceremonia religiosa según la fe y tradición de tu familia, ya sea una misa católica, un servicio evangélico, una ceremonia judía u otro rito, contactando al oficiante correspondiente y adaptando el velatorio a los requerimientos específicos de cada credo."
-  },
-  {
-    keywords: ["finiquito", "pension de viudez", "pensión de viudez", "pension de sobrevivencia", "pensión de sobrevivencia", "orfandad", "avisar al banco", "cancelar tarjetas"],
-    response: "Después del funeral, la familia directa debe realizar algunos trámites adicionales: solicitar el finiquito laboral si el fallecido tenía empleo vigente, tramitar la Pensión de Sobrevivencia o de Viudez/Orfandad ante la AFP correspondiente, y notificar a bancos e instituciones financieras para cancelar tarjetas o cuentas. En Sendero Otoñal te entregamos las copias necesarias del Certificado de Defunción y te orientamos sobre por dónde comenzar cada uno de estos trámites."
-  },
-  {
-    keywords: ["streaming", "transmitir", "transmision en vivo", "transmisión en vivo", "ver por internet", "familiar en el extranjero", "no puede viajar"],
-    response: "Para familiares que no puedan trasladarse, ofrecemos la posibilidad de transmitir la ceremonia o el velatorio en vivo a través de streaming, permitiendo que quienes estén en otra región o en el extranjero puedan acompañar la despedida a distancia. Consúltanos con anticipación para coordinar los detalles técnicos."
-  },
-  {
-    keywords: ["repatriar", "repatriacion", "repatriación", "cuerpo en el extranjero", "consulado", "fallecio en el extranjero", "falleció en el extranjero"],
-    response: "Si el fallecimiento ocurrió en el extranjero, se requiere gestionar la repatriación del cuerpo a través del consulado chileno correspondiente, junto con la documentación sanitaria y de aduana necesaria para el ingreso al país. En Sendero Otoñal te acompañamos en la coordinación de estos trámites internacionales y en la recepción del cuerpo en Chile."
-  },
-  {
-    keywords: ["fallecio mi hijo", "falleció mi hija", "murio mi bebe", "murió mi bebé", "menor de edad fallecio", "menor de edad falleció", "guagua", "bebe fallecido", "bebé fallecido"],
-    response: "Lamentamos profundamente tu pérdida; sabemos que no hay palabras que alivien el dolor de despedir a un hijo o hija. Para estos casos contamos con un trato especialmente cuidadoso y reservado, planes adaptados y acompañamiento humano desde el primer momento. Te invitamos a llamarnos directamente al +569 7891 1807 para que podamos atenderte de inmediato y con la contención que mereces."
-  },
-  {
-    keywords: ["misa de un año", "aniversario", "cabo de año", "recordatorio del fallecimiento", "un año del fallecimiento"],
-    response: "Podemos ayudarte a coordinar una misa o ceremonia de aniversario (cabo de año) para recordar a tu ser querido, ya sea en la iglesia de tu preferencia, en el cementerio o en un espacio familiar. Contáctanos con anticipación para organizar los detalles junto a ti."
-  }
-];
 export default function AiAdvisor() {
+  const [faqs, setFaqs] = useState<FAQEntry[]>([]);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -133,6 +28,23 @@ export default function AiAdvisor() {
   const [isTyping, setIsTyping] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+    
+    fetch(`${apiBaseUrl}/faqs`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const parsed = data.map((f: any) => ({
+            keywords: typeof f.keywords === "string" ? JSON.parse(f.keywords) : (f.keywords || []),
+            response: f.response
+          }));
+          setFaqs(parsed);
+        }
+      })
+      .catch((err) => console.warn("Error cargando FAQs de la API:", err));
+  }, []);
+
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -141,7 +53,6 @@ export default function AiAdvisor() {
 
   useEffect(() => {
     if (messages.length > 1 || isTyping) {
-      // Usar setTimeout para dar tiempo al navegador de pintar el mensaje nuevo
       setTimeout(scrollToBottom, 50);
     }
   }, [messages, isTyping]);
@@ -162,11 +73,10 @@ export default function AiAdvisor() {
     setInput("");
     setIsTyping(true);
 
-    // Simular el retraso de búsqueda/análisis
     setTimeout(() => {
-      // Buscar coincidencia en la base de datos local JSON (FAQ_DATABASE)
-      const matchedEntry = FAQ_DATABASE.find((entry) =>
-        entry.keywords.some((keyword) => queryLower.includes(keyword))
+      // Buscar coincidencia en las FAQs dinámicas cargadas del backend
+      const matchedEntry = faqs.find((entry) =>
+        entry.keywords.some((keyword) => queryLower.includes(keyword.toLowerCase()))
       );
 
       let reply = "";
@@ -175,7 +85,6 @@ export default function AiAdvisor() {
       if (matchedEntry) {
         reply = matchedEntry.response;
       } else {
-        // Si no se encuentra respuesta, derivar a WhatsApp
         reply = "No he encontrado una respuesta exacta a tu consulta en mi base de datos de preguntas frecuentes. Para entregarte la información precisa de inmediato, te derivaré con un asesor de Sendero Otoñal por WhatsApp.";
         isWhatsAppRedirect = true;
       }
@@ -199,7 +108,7 @@ export default function AiAdvisor() {
       <div className="max-w-3xl mx-auto px-4">
         <div className="text-center mb-8">
           <span className="text-xs uppercase tracking-widest text-brand-gold font-bold">
-            Asesor Virtual de Contención
+            Asistente Virtual de Contención
           </span>
           <h2 className="font-serif text-2xl sm:text-3xl text-brand-olivedark font-semibold">
             Consultas Legales y Trámites Sin Costo

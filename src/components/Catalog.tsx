@@ -1,14 +1,54 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+interface Plan {
+  id?: number;
+  badge: string;
+  name: string;
+  description: string;
+  price: number;
+  features: string[];
+  button_text: string;
+}
 
 export default function Catalog() {
+  const [plans, setPlans] = useState<Plan[]>([]);
+
+  useEffect(() => {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+    fetch(`${apiBaseUrl}/plans`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          // Normalizar features por si vinieran como string JSON en crudo en motores antiguos
+          const parsed = data.map((p: any) => ({
+            ...p,
+            features: typeof p.features === "string" ? JSON.parse(p.features) : p.features
+          }));
+          setPlans(parsed);
+        }
+      })
+      .catch((err) => console.warn("Error cargando planes desde API, usando local fallback:", err));
+  }, []);
+
   const formatCurrency = (val: number) => {
+    if (val === 0) return "Financiamiento";
     return new Intl.NumberFormat("es-CL", {
       style: "currency",
       currency: "CLP",
       minimumFractionDigits: 0,
     }).format(val);
+  };
+
+  const getWhatsAppLink = (planName: string, price: number, buttonText: string) => {
+    let text = "";
+    if (price === 0) {
+      text = `Hola Funeraria Sendero Otoñal, deseo más información sobre los Planes de Previsión Anticipada.`;
+    } else {
+      text = `Hola Funeraria Sendero Otoñal, me gustaría consultar más detalles sobre el ${planName} de ${formatCurrency(price)}.`;
+    }
+    return `https://wa.me/56978911807?text=${encodeURIComponent(text)}`;
   };
 
   return (
@@ -29,192 +69,60 @@ export default function Catalog() {
       </div>
 
       <div className="flex overflow-x-auto pb-6 gap-6 snap-x snap-mandatory md:grid md:grid-cols-4 md:overflow-visible no-scrollbar">
-        {/* Servicio Clásico */}
-        <div className="min-w-[78vw] sm:min-w-[45vw] md:min-w-0 snap-center bg-white rounded-2xl border border-brand-gold/15 p-6 flex flex-col justify-between shadow-sm hover:shadow-xl hover:border-brand-gold/40 hover:-translate-y-2 transition-all duration-300 relative">
-          <div>
-            <span className="text-[10px] font-bold text-brand-olive bg-brand-olive/10 px-3 py-1 rounded-full uppercase tracking-wider block w-max mb-4">
-              Tradicional Básico
-            </span>
-            <h3 className="font-serif text-lg text-brand-olivedark font-bold mb-1">Servicio Clásico</h3>
-            <p className="text-xs text-gray-500 font-light mb-4">
-              Una ceremonia digna y esencial con toda la cobertura logística necesaria.
-            </p>
-            <p className="text-xl font-bold text-brand-olive font-mono mb-4">{formatCurrency(960000)}</p>
+        {plans.map((p, idx) => {
+          const isPrevision = p.price === 0;
+          return (
+            <div
+              key={p.name + idx}
+              className={`min-w-[78vw] sm:min-w-[45vw] md:min-w-0 snap-center bg-white rounded-2xl border p-6 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative ${
+                isPrevision
+                  ? "border-brand-olive/30 bg-gradient-to-b from-white to-brand-linen hover:border-brand-olive/60"
+                  : "border-brand-gold/15 hover:border-brand-gold/40"
+              }`}
+            >
+              {isPrevision && (
+                <span className="absolute top-4 right-4 bg-brand-olive text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
+                  Tranquilidad futura
+                </span>
+              )}
+              <div>
+                <span className="text-[10px] font-bold text-brand-olive bg-brand-olive/10 px-3 py-1 rounded-full uppercase tracking-wider block w-max mb-4">
+                  {p.badge}
+                </span>
+                <h3 className="font-serif text-lg text-brand-olivedark font-bold mb-1">{p.name}</h3>
+                <p className="text-xs text-gray-500 font-light mb-4">{p.description}</p>
+                <p className="text-xl font-bold text-brand-olive font-mono mb-4">
+                  {isPrevision ? "Financiamiento Flexible" : formatCurrency(p.price)}
+                </p>
 
-            <div className="space-y-2.5 border-t border-gray-100 pt-4 text-xs text-gray-600">
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Urna de madera nativa estándar.</span>
+                <div className="space-y-2.5 border-t border-gray-100 pt-4 text-xs text-gray-600">
+                  {Array.isArray(p.features) &&
+                    p.features.map((feat, fIdx) => (
+                      <div key={fIdx} className="flex items-start gap-2">
+                        <span className="text-brand-gold">✔</span>
+                        <span>{feat}</span>
+                      </div>
+                    ))}
+                </div>
               </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Carroza o Van de instalación.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Trámites de inscripción y pase de sepultación.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Ornamentación de luces, tarjetero y libro de condolencias.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Carroza de funeral y Van de acompañamiento.</span>
+
+              <div className="mt-8 pt-4 border-t border-gray-100">
+                <a
+                  href={getWhatsAppLink(p.name, p.price, p.button_text)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-full text-center text-xs py-2.5 rounded-lg font-medium transition-all block ${
+                    isPrevision
+                      ? "bg-brand-olive text-white hover:bg-brand-olivedark"
+                      : "bg-brand-linen border border-brand-gold text-brand-olivedark hover:bg-brand-gold hover:text-white"
+                  }`}
+                >
+                  {p.button_text}
+                </a>
               </div>
             </div>
-          </div>
-          <div className="mt-8 pt-4 border-t border-gray-50">
-            <a
-              href="https://wa.me/56978911807?text=Hola%20Funeraria%20Sendero%20Oto%C3%B1al,%20me%20gustar%C3%ADa%20consultar%20m%C3%A1s%20detalles%20sobre%20el%20Servicio%20Cl%C3%A1sico%20de%20$960.000."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full text-center text-xs bg-brand-linen border border-brand-gold text-brand-olivedark py-2.5 rounded-lg font-medium hover:bg-brand-gold hover:text-white transition-all block"
-            >
-              Cotizar por WhatsApp
-            </a>
-          </div>
-        </div>
-
-        {/* Servicio Estándar */}
-        <div className="min-w-[78vw] sm:min-w-[45vw] md:min-w-0 snap-center bg-white rounded-2xl border border-brand-gold/15 p-6 flex flex-col justify-between shadow-sm hover:shadow-xl hover:border-brand-gold/40 hover:-translate-y-2 transition-all duration-300 relative">
-          <div>
-            <span className="text-[10px] font-bold text-brand-olive bg-brand-olive/10 px-3 py-1 rounded-full uppercase tracking-wider block w-max mb-4">
-              Más Solicitado
-            </span>
-            <h3 className="font-serif text-lg text-brand-olivedark font-bold mb-1">Servicio Estándar</h3>
-            <p className="text-xs text-gray-500 font-light mb-4">
-              Nuestra opción estándar recomendada con detalles mejorados en el cofre.
-            </p>
-            <p className="text-xl font-bold text-brand-olive font-mono mb-4">{formatCurrency(1290000)}</p>
-
-            <div className="space-y-2.5 border-t border-gray-100 pt-4 text-xs text-gray-600">
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Urna de madera nativa de diseño superior.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Carroza o Van de instalación y traslado.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Trámites de inscripción y pase de sepultación.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Ornamentación de luces, tarjetero y libro de condolencias.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Carroza de funeral y Van de acompañamiento familiar.</span>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 pt-4 border-t border-gray-50">
-            <a
-              href="https://wa.me/56978911807?text=Hola%20Funeraria%20Sendero%20Oto%C3%B1al,%20me%20gustar%C3%ADa%20consultar%20m%C3%A1s%20detalles%20sobre%20el%20Servicio%20Est%C3%A1ndar%20de%20$1.290.000."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full text-center text-xs bg-brand-linen border border-brand-gold text-brand-olivedark py-2.5 rounded-lg font-medium hover:bg-brand-gold hover:text-white transition-all block"
-            >
-              Cotizar por WhatsApp
-            </a>
-          </div>
-        </div>
-
-        {/* Servicio Memorial */}
-        <div className="min-w-[78vw] sm:min-w-[45vw] md:min-w-0 snap-center bg-white rounded-2xl border border-brand-gold/15 p-6 flex flex-col justify-between shadow-sm hover:shadow-xl hover:border-brand-gold/40 hover:-translate-y-2 transition-all duration-300 relative">
-          <div>
-            <span className="text-[10px] font-bold text-brand-gold bg-brand-gold/15 px-3 py-1 rounded-full uppercase tracking-wider block w-max mb-4">
-              Calidad Premium
-            </span>
-            <h3 className="font-serif text-lg text-brand-olivedark font-bold mb-1">Servicio Memorial</h3>
-            <p className="text-xs text-gray-500 font-light mb-4">
-              Ceremonia premium con cofre presidencial barnizado y servicios complementarios.
-            </p>
-            <p className="text-xl font-bold text-brand-olive font-mono mb-4">{formatCurrency(1990000)}</p>
-
-            <div className="space-y-2.5 border-t border-gray-100 pt-4 text-xs text-gray-600">
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Urna de madera noble finamente terminada.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Carroza panorámica President.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Ornamentación de luces o cirios completos y tarjetero de madera.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Arreglo floral incluido y libro de condolencias.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Van de acompañamiento para 10 personas.</span>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 pt-4 border-t border-gray-50">
-            <a
-              href="https://wa.me/56978911807?text=Hola%20Funeraria%20Sendero%20Oto%C3%B1al,%20me%20gustar%C3%ADa%20consultar%20m%C3%A1s%20detalles%20sobre%20el%20Servicio%20Memorial%20de%20$1.990.000."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full text-center text-xs bg-brand-linen border border-brand-gold text-brand-olivedark py-2.5 rounded-lg font-medium hover:bg-brand-gold hover:text-white transition-all block"
-            >
-              Cotizar por WhatsApp
-            </a>
-          </div>
-        </div>
-
-        {/* Plan Previsión Familiar */}
-        <div className="min-w-[78vw] sm:min-w-[45vw] md:min-w-0 snap-center bg-white rounded-2xl border border-brand-olive/30 p-6 flex flex-col justify-between shadow-sm bg-gradient-to-b from-white to-brand-linen hover:shadow-xl hover:border-brand-olive/60 hover:-translate-y-2 transition-all duration-300 relative">
-          <span className="absolute top-4 right-4 bg-brand-olive text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
-            Tranquilidad futura
-          </span>
-          <div>
-            <span className="text-[10px] font-bold text-brand-olive bg-brand-olive/10 px-3 py-1 rounded-full uppercase tracking-wider block w-max mb-4">
-              Previsión Familiar
-            </span>
-            <h3 className="font-serif text-lg text-brand-olivedark font-bold mb-1">Plan de Previsión</h3>
-            <p className="text-xs text-gray-500 font-light mb-4">
-              Asegura la tranquilidad contratando el servicio anticipadamente a valores congelados.
-            </p>
-            <p className="text-xs font-semibold text-brand-olive mb-4">Financiamiento flexible</p>
-
-            <div className="space-y-2.5 border-t border-gray-100 pt-4 text-xs text-gray-600">
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Congela el costo del servicio a valores actuales para siempre.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Contratos transferibles a cualquier miembro familiar.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Opciones de pago flexibles en cuotas sin interés.</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-brand-gold">✔</span>
-                <span>Asesoramiento privado y delicado a domicilio.</span>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 pt-4 border-t border-gray-100">
-            <a
-              href="https://wa.me/56978911807?text=Hola%20Funeraria%20Sendero%20Oto%C3%B1al,%20deseo%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20Planes%20de%20Previsi%C3%B3n%20Anticipada."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full text-center text-xs bg-brand-olive text-white py-2.5 rounded-lg font-medium hover:bg-brand-olivedark transition-all block"
-            >
-              Consultar Planes Preventivos
-            </a>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </section>
   );

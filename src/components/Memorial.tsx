@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface Condolence {
   id: number;
@@ -9,38 +9,105 @@ interface Condolence {
   message: string;
 }
 
-export default function Memorial() {
-  const [condolences] = useState<Condolence[]>([
-    {
-      id: 1,
-      name: "Familia Valenzuela Silva",
-      time: "Hace 15 min",
-      message: "Nuestras más sinceras condolencias por la partida de Don Alberto. Un gran hombre que siempre recordaremos con inmenso cariño.",
-    },
-    {
-      id: 2,
-      name: "María Inés Jara",
-      time: "Hace 1 hora",
-      message: "Acompañándolos en su dolor. Fuerza y paz para toda la familia en este momento tan difícil.",
-    },
-  ]);
+interface Obituary {
+  id: number;
+  name: string;
+  image_url?: string | null;
+  birth_year: string;
+  death_year: string;
+  location: string;
+  velatorio: string;
+  responso: string;
+  destino: string;
+  candle_count: number;
+  condolences: Condolence[];
+}
 
-  const [candleCount, setCandleCount] = useState(142);
+export default function Memorial() {
+  const [obituary, setObituary] = useState<Obituary | null>(null);
+  const [candleCount, setCandleCount] = useState(0);
   const [candleIgnited, setCandleIgnited] = useState(false);
+
+  // Estados del Formulario de Condolencias
+  const [showForm, setShowForm] = useState(false);
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+    
+    fetch(`${apiBaseUrl}/obituaries`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          // Tomar el primer obituario activo
+          const activeObit = data[0];
+          setObituary(activeObit);
+          setCandleCount(Number(activeObit.candle_count || 0));
+        }
+      })
+      .catch((err) => console.warn("Error cargando obituarios de API:", err));
+  }, []);
+
+  if (!obituary) return null;
 
   const handleIgniteCandle = () => {
     if (candleIgnited) return;
+
+    // Actualizar localmente de inmediato
     setCandleCount((prev) => prev + 1);
     setCandleIgnited(true);
+
+    // Enviar al servidor para que persista
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+    fetch(`${apiBaseUrl}/obituaries/${obituary.id}/ignite`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && typeof data.candle_count === "number") {
+          setCandleCount(data.candle_count);
+        }
+      })
+      .catch((err) => console.warn("Error enviando encendido de vela al servidor:", err));
   };
 
-  const handleSendCondolenceWhatsApp = () => {
-    const text = `Hola Funeraria Sendero Otoñal. Deseo enviar una condolencia para ser publicada en el obituario de Don Alberto Valenzuela Rojas:
+  const handleSendCondolence = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !message.trim()) return;
 
-De (Nombre/Familia): 
-Mensaje: `;
-    const encodedText = encodeURIComponent(text);
-    window.open(`https://wa.me/56978911807?text=${encodedText}`, "_blank");
+    setIsSending(true);
+    setSuccessMessage("");
+
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+    fetch(`${apiBaseUrl}/obituaries/${obituary.id}/condolences`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, message }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setSuccessMessage("Gracias. Tu condolencia ha sido recibida con respeto y será publicada una vez sea revisada por la familia.");
+          setName("");
+          setMessage("");
+          setTimeout(() => {
+            setShowForm(false);
+            setSuccessMessage("");
+          }, 5000);
+        }
+      })
+      .catch((err) => console.warn("Error enviando condolencia:", err))
+      .finally(() => {
+        setIsSending(false);
+      });
   };
 
   return (
@@ -56,44 +123,136 @@ Mensaje: `;
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
-        {/* Obituario de Ejemplo Activo */}
+        {/* Obituario Activo */}
         <div className="bg-white p-6 rounded-2xl border border-brand-gold/15 shadow-sm space-y-4 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <span className="text-[10px] font-bold text-brand-olive bg-brand-olive/10 px-2 py-0.5 rounded uppercase">
                 Servicio Hoy
               </span>
-              <span className="text-xs text-gray-500 font-light">Valle del Aconcagua</span>
+              <span className="text-xs text-gray-500 font-light">{obituary.location || "Valle del Aconcagua"}</span>
             </div>
 
-            <div className="text-center py-4">
+            <div className="text-center py-4 flex flex-col items-center">
+               {obituary.image_url ? (
+                <img
+                  src={obituary.image_url}
+                  alt={obituary.name}
+                  width={96}
+                  height={96}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-24 h-24 rounded-full object-cover border-2 border-brand-gold/40 shadow-sm mb-3"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-brand-olivedark flex items-center justify-center border-2 border-brand-gold/40 shadow-sm mb-3">
+                  <img
+                    src="/logo.png"
+                    alt="Sendero Otoñal"
+                    width={56}
+                    height={56}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-14 h-14 object-contain"
+                  />
+                </div>
+              )}
               <h3 className="font-serif text-xl sm:text-2xl text-brand-olivedark font-medium">
-                Don Alberto Valenzuela Rojas
+                {obituary.name}
               </h3>
-              <p className="text-xs text-brand-gold tracking-widest uppercase mt-1">1945 — 2026</p>
+              <p className="text-xs text-brand-gold tracking-widest uppercase mt-1">
+                {obituary.birth_year} — {obituary.death_year}
+              </p>
             </div>
 
             <div className="space-y-2 text-xs bg-brand-linen/50 p-4 rounded-xl border border-brand-gold/5 leading-relaxed font-light">
-              <p>
-                <strong>Velatorio:</strong> Parroquia Santa María de los Andes.
-              </p>
-              <p>
-                <strong>Responsos:</strong> Sábado 18 de Julio a las 11:00 hrs.
-              </p>
-              <p>
-                <strong>Destino:</strong> Cinerario Parque del Sendero.
-              </p>
+              {obituary.velatorio && (
+                <p>
+                  <strong>Velatorio:</strong> {obituary.velatorio}
+                </p>
+              )}
+              {obituary.responso && (
+                <p>
+                  <strong>Responsos:</strong> {obituary.responso}
+                </p>
+              )}
+              {obituary.destino && (
+                <p>
+                  <strong>Destino:</strong> {obituary.destino}
+                </p>
+              )}
             </div>
           </div>
 
-          <div className="flex justify-between items-center text-xs pt-4 border-t border-gray-50 mt-4">
-            <button
-              onClick={handleSendCondolenceWhatsApp}
-              className="text-brand-olive hover:underline font-semibold flex items-center gap-1 cursor-pointer"
-            >
-              ✍ Enviar Condolencia (Vía WhatsApp para moderación)
-            </button>
-            <span className="text-gray-400 font-light">{condolences.length} Mensajes verificados</span>
+          <div className="border-t border-gray-100 pt-4 mt-4">
+            {!showForm ? (
+              <div className="flex justify-between items-center text-xs">
+                <button
+                  type="button"
+                  onClick={() => setShowForm(true)}
+                  className="text-brand-olive hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+                >
+                  ✍ Dejar Mensaje de Condolencia
+                </button>
+                <span className="text-gray-400 font-light">
+                  {(obituary.condolences || []).length} Mensajes verificados
+                </span>
+              </div>
+            ) : (
+              <form onSubmit={handleSendCondolence} className="space-y-3 mt-2">
+                <h4 className="text-xs font-bold text-brand-olivedark uppercase tracking-wider">
+                  Escribir Condolencia
+                </h4>
+                
+                {successMessage ? (
+                  <p className="text-xs text-brand-olive bg-brand-linen p-2.5 rounded-lg font-medium">
+                    {successMessage}
+                  </p>
+                ) : (
+                  <>
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Tu Nombre o Familia (Ej: Familia Silva Jara)"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        className="w-full p-2.5 text-xs md:text-sm border border-brand-gold/20 rounded-xl focus:outline-none focus:border-brand-olive bg-white text-brand-charcoal"
+                      />
+                    </div>
+                    <div>
+                      <textarea
+                        placeholder="Mensaje de apoyo..."
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        required
+                        rows={3}
+                        className="w-full p-2.5 text-xs md:text-sm border border-brand-gold/20 rounded-xl focus:outline-none focus:border-brand-olive bg-white text-brand-charcoal resize-none"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        type="submit"
+                        disabled={isSending}
+                        className="bg-brand-olive hover:bg-brand-olivedark text-white font-semibold px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer"
+                      >
+                        {isSending ? "Enviando..." : "Enviar Condolencia"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowForm(false);
+                          setSuccessMessage("");
+                        }}
+                        className="bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </>
+                )}
+              </form>
+            )}
           </div>
         </div>
 
@@ -140,21 +299,23 @@ Mensaje: `;
       </div>
 
       {/* Historial de Condolencias */}
-      <div className="mt-8 bg-white p-5 rounded-2xl border border-brand-gold/10">
-        <h4 className="text-xs font-bold text-brand-olivedark uppercase tracking-wider mb-3">
-          Últimas Palabras de Apoyo Compartidas (Verificadas)
-        </h4>
-        <div className="space-y-3 max-h-48 overflow-y-auto pr-2 no-scrollbar">
-          {condolences.map((c) => (
-            <div key={c.id} className="text-xs border-b border-gray-100 pb-2.5 font-light">
-              <p className="text-brand-olivedark font-semibold">
-                {c.name} <span className="text-[10px] text-gray-400 font-normal ml-2">{c.time}</span>
-              </p>
-              <p className="text-gray-600 italic">"{c.message}"</p>
-            </div>
-          ))}
+      {obituary.condolences && obituary.condolences.length > 0 && (
+        <div className="mt-8 bg-white p-5 rounded-2xl border border-brand-gold/10">
+          <h4 className="text-xs font-bold text-brand-olivedark uppercase tracking-wider mb-3">
+            Últimas Palabras de Apoyo Compartidas (Verificadas)
+          </h4>
+          <div className="space-y-3 max-h-48 overflow-y-auto pr-2 no-scrollbar">
+            {obituary.condolences.map((c, idx) => (
+              <div key={c.id || idx} className="text-xs border-b border-gray-100 pb-2.5 font-light">
+                <p className="text-brand-olivedark font-semibold">
+                  {c.name} <span className="text-[10px] text-gray-400 font-normal ml-2">{c.time}</span>
+                </p>
+                <p className="text-gray-600 italic">"{c.message}"</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

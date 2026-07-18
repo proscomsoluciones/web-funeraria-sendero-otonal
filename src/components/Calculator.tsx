@@ -1,41 +1,67 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface BaseService {
   name: string;
   price: number;
-  desc: string;
 }
 
-const BASE_SERVICES: BaseService[] = [
-  { name: "Servicio Clásico", price: 960000, desc: "Urna esencial nativa y acompañamiento" },
-  { name: "Servicio Estándar", price: 1290000, desc: "Urna tallada y van de acompañamiento" },
-  { name: "Servicio Estándar II", price: 1390000, desc: "Urna barnizada y van de acompañamiento" },
-  { name: "Servicio Memorial", price: 1990000, desc: "Urna premium noble y carroza President" },
-  { name: "Servicio Memorial II", price: 2190000, desc: "Urna premium tallada de madera noble" },
-  { name: "Tradición Familiar", price: 2690000, desc: "Urna presidencial exclusiva y carroza President" },
-  { name: "Oregon", price: 2890000, desc: "Urna de madera noble tipo Oregon importada" },
-  { name: "Oregon II", price: 2990000, desc: "Urna presidencial Oregon vetas seleccionadas" },
-  { name: "Noble", price: 3190000, desc: "Urna de lujo maderas finas y acabados de honor" },
-  { name: "Otoñal", price: 3290000, desc: "Urna de alta gama Sendero Otoñal con copón especial" },
-];
+interface ExtraService {
+  id: number;
+  name: string;
+  price: number;
+  show_in_calculator: boolean;
+}
 
 export default function Calculator() {
-  const [selectedServiceIdx, setSelectedServiceIdx] = useState<number>(1); // Default to Servicio Estándar
-  const [docCert, setDocCert] = useState<boolean>(false);
-  const [flowerArrangement, setFlowerArrangement] = useState<boolean>(false);
-  const [coffeeService, setCoffeeService] = useState<boolean>(false);
-  const [extraVan, setExtraVan] = useState<boolean>(false);
+  const [baseServices, setBaseServices] = useState<BaseService[]>([]);
+  const [extraServices, setExtraServices] = useState<ExtraService[]>([]);
+  
+  const [selectedServiceIdx, setSelectedServiceIdx] = useState<number>(0); 
+  const [selectedExtras, setSelectedExtras] = useState<number[]>([]);
 
-  const selectedService = BASE_SERVICES[selectedServiceIdx];
+  useEffect(() => {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
-  const total =
-    selectedService.price +
-    (docCert ? 80000 : 0) +
-    (flowerArrangement ? 65000 : 0) +
-    (coffeeService ? 150000 : 0) +
-    (extraVan ? 120000 : 0);
+    // 1. Cargar Urnas para los servicios base
+    fetch(`${apiBaseUrl}/urns`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const formatted = data.map((u: any) => ({
+            name: u.name,
+            price: Number(u.price)
+          }));
+          setBaseServices(formatted);
+        }
+      })
+      .catch((err) => console.warn("Error cargando baseServices de API:", err));
+
+    // 2. Cargar Servicios Adicionales
+    fetch(`${apiBaseUrl}/extra-services`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const formatted = data.map((e: any) => ({
+            id: e.id,
+            name: e.name,
+            price: Number(e.price),
+            show_in_calculator: Boolean(e.show_in_calculator)
+          }));
+          setExtraServices(formatted);
+        }
+      })
+      .catch((err) => console.warn("Error cargando extraServices de API:", err));
+  }, []);
+
+  const selectedService = baseServices[selectedServiceIdx] || { name: "Cargando...", price: 0 };
+
+  const extrasTotal = extraServices
+    .filter((s) => selectedExtras.includes(s.id))
+    .reduce((sum, s) => sum + s.price, 0);
+
+  const total = selectedService.price + extrasTotal;
 
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat("es-CL", {
@@ -46,16 +72,14 @@ export default function Calculator() {
   };
 
   const sendBudgetToWhatsApp = () => {
+    const selectedList = extraServices
+      .filter((s) => selectedExtras.includes(s.id))
+      .map((s) => `${s.name} (+${formatCurrency(s.price)})`)
+      .join(", ");
+
     const text = `Hola Funeraria Sendero Otoñal. He realizado una cotización personalizada en su sitio web:
 - Plan Base: ${selectedService.name} (${formatCurrency(selectedService.price)})
-- Servicios Adicionales: ${[
-      docCert ? "Doctor para Certificación ($80.000)" : null,
-      flowerArrangement ? "Arreglo Floral adicional ($65.000)" : null,
-      coffeeService ? "Servicio de Cafetería ($150.000)" : null,
-      extraVan ? "Van de Acompañamiento adicional ($120.000)" : null,
-    ]
-      .filter(Boolean)
-      .join(", ") || "Ninguno"}
+- Servicios Adicionales: ${selectedList || "Ninguno"}
 ------------------------------------
 Total Estimado: ${formatCurrency(total)}
 
@@ -78,8 +102,7 @@ Me gustaría coordinar una asesoría personalizada.`;
           </p>
         </div>
 
-        {/* Panel de Cotización Dinámico */}
-        <div className="grid md:grid-cols-12 gap-8 items-start bg-brand-linen/40 p-6 rounded-2xl border border-brand-gold/10">
+        <div className="grid md:grid-cols-12 gap-8 items-start">
           {/* Opciones (7 columnas) */}
           <div className="md:col-span-7 space-y-6">
             {/* 1. Selección de Plan Base del Catálogo */}
@@ -92,7 +115,7 @@ Me gustaría coordinar una asesoría personalizada.`;
                 onChange={(e) => setSelectedServiceIdx(Number(e.target.value))}
                 className="w-full p-3 rounded-xl border border-brand-gold/20 bg-white text-base text-brand-charcoal focus:outline-none focus:border-brand-olive cursor-pointer"
               >
-                {BASE_SERVICES.map((srv, idx) => (
+                {baseServices.map((srv, idx) => (
                   <option key={srv.name} value={idx}>
                     {srv.name} — {formatCurrency(srv.price)}
                   </option>
@@ -106,45 +129,33 @@ Me gustaría coordinar una asesoría personalizada.`;
                 2. Servicios Adicionales (Opcionales)
               </label>
               <div className="space-y-2.5">
-                <label className="flex items-center gap-3 p-3 rounded-xl bg-white border border-brand-gold/10 text-xs md:text-sm text-gray-700 cursor-pointer hover:bg-brand-linen/50 transition-colors">
-                  <input
-                    type="checkbox"
-                    checked={docCert}
-                    onChange={(e) => setDocCert(e.target.checked)}
-                    className="w-4 h-4 rounded border-gray-300 text-brand-olive focus:ring-brand-olive cursor-pointer"
-                  />
-                  <span>Médico para Certificación de Defunción (+ {formatCurrency(80000)})</span>
-                </label>
-
-                <label className="flex items-center gap-3 p-3 rounded-xl bg-white border border-brand-gold/10 text-xs md:text-sm text-gray-700 cursor-pointer hover:bg-brand-linen/50 transition-colors">
-                  <input
-                    type="checkbox"
-                    checked={flowerArrangement}
-                    onChange={(e) => setFlowerArrangement(e.target.checked)}
-                    className="w-4 h-4 rounded border-gray-300 text-brand-olive focus:ring-brand-olive cursor-pointer"
-                  />
-                  <span>Arreglo Floral de Rosas Naturales Selección (+ {formatCurrency(65000)})</span>
-                </label>
-
-                <label className="flex items-center gap-3 p-3 rounded-xl bg-white border border-brand-gold/10 text-xs md:text-sm text-gray-700 cursor-pointer hover:bg-brand-linen/50 transition-colors">
-                  <input
-                    type="checkbox"
-                    checked={coffeeService}
-                    onChange={(e) => setCoffeeService(e.target.checked)}
-                    className="w-4 h-4 rounded border-gray-300 text-brand-olive focus:ring-brand-olive cursor-pointer"
-                  />
-                  <span>Servicio de Cafetería Premium para el Velatorio (+ {formatCurrency(150000)})</span>
-                </label>
-
-                <label className="flex items-center gap-3 p-3 rounded-xl bg-white border border-brand-gold/10 text-xs md:text-sm text-gray-700 cursor-pointer hover:bg-brand-linen/50 transition-colors">
-                  <input
-                    type="checkbox"
-                    checked={extraVan}
-                    onChange={(e) => setExtraVan(e.target.checked)}
-                    className="w-4 h-4 rounded border-gray-300 text-brand-olive focus:ring-brand-olive cursor-pointer"
-                  />
-                  <span>Furgón / Van de Acompañamiento Familiar adicional (+ {formatCurrency(120000)})</span>
-                </label>
+                {extraServices
+                  .filter((s) => s.show_in_calculator)
+                  .map((service) => {
+                    const isChecked = selectedExtras.includes(service.id);
+                    return (
+                      <label
+                        key={service.id}
+                        className="flex items-center gap-3 p-3 rounded-xl bg-white border border-brand-gold/10 text-xs md:text-sm text-gray-700 cursor-pointer hover:bg-brand-linen/50 transition-colors"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={() => {
+                            setSelectedExtras((prev) =>
+                              isChecked
+                                ? prev.filter((id) => id !== service.id)
+                                : [...prev, service.id]
+                            );
+                          }}
+                          className="w-4 h-4 rounded border-gray-300 text-brand-olive focus:ring-brand-olive cursor-pointer"
+                        />
+                        <span>
+                          {service.name} (+ {formatCurrency(service.price)})
+                        </span>
+                      </label>
+                    );
+                  })}
               </div>
             </div>
           </div>
@@ -158,23 +169,22 @@ Me gustaría coordinar una asesoría personalizada.`;
             <div className="space-y-3 text-xs md:text-sm">
               <div className="flex justify-between text-gray-500">
                 <span>Servicio Base:</span>
-                <span className="font-mono text-brand-charcoal font-semibold">{formatCurrency(selectedService.price)}</span>
+                <span className="font-mono text-brand-charcoal font-semibold">
+                  {formatCurrency(selectedService.price)}
+                </span>
               </div>
               <div className="flex justify-between text-gray-500">
                 <span>Adicionales:</span>
                 <span className="font-mono text-brand-charcoal">
-                  {formatCurrency(
-                    (docCert ? 80000 : 0) +
-                      (flowerArrangement ? 65000 : 0) +
-                      (coffeeService ? 150000 : 0) +
-                      (extraVan ? 120000 : 0)
-                  )}
+                  {formatCurrency(extrasTotal)}
                 </span>
               </div>
 
               <div className="border-t border-dashed border-gray-200 pt-3 flex justify-between items-baseline">
                 <span className="text-sm md:text-base font-bold text-brand-olivedark">Total Estimado:</span>
-                <span className="font-serif text-lg md:text-xl font-bold text-brand-olive font-mono">{formatCurrency(total)}</span>
+                <span className="font-serif text-lg md:text-xl font-bold text-brand-olive font-mono">
+                  {formatCurrency(total)}
+                </span>
               </div>
             </div>
 

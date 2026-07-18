@@ -41,6 +41,9 @@ export default function Header() {
             <img
               src="/logo.png"
               alt="Funeraria Sendero Otoñal"
+              width={180}
+              height={80}
+              fetchPriority="high"
               className="h-16 md:h-20 w-auto object-contain"
             />
           </a>
