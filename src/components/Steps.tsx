@@ -65,14 +65,13 @@ export default function Steps() {
 
         <div className="mt-6 p-4 rounded-xl bg-brand-gold/10 border border-brand-gold/20 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-brand-olivedark/90 font-light text-center sm:text-left">
-            <strong>¿Tienes dudas legales sobre pensiones o cuota mortuoria?</strong> Utiliza nuestro Asesor Legal de
-            Inteligencia Artificial para respuestas inmediatas.
+            <strong>¿Tienes dudas legales sobre pensiones o cuota mortuoria?</strong> Utiliza nuestro Asistente Virtual para respuestas inmediatas.
           </p>
           <a
             href="#consejero-ia"
             className="text-sm bg-brand-olive text-white px-4 py-2.5 rounded-lg font-medium hover:bg-brand-olivedark transition-colors whitespace-nowrap"
           >
-            Consultar a la IA
+            Consultar Asistente Virtual
           </a>
         </div>
       </div>

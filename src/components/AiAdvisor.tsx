@@ -131,15 +131,18 @@ export default function AiAdvisor() {
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   };
 
   useEffect(() => {
     if (messages.length > 1 || isTyping) {
-      scrollToBottom();
+      // Usar setTimeout para dar tiempo al navegador de pintar el mensaje nuevo
+      setTimeout(scrollToBottom, 50);
     }
   }, [messages, isTyping]);
 
@@ -228,7 +231,7 @@ export default function AiAdvisor() {
           </div>
 
           {/* Contenedor de Mensajes */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-4 no-scrollbar bg-[#FAF9F6] flex flex-col">
+          <div ref={chatContainerRef} className="flex-1 p-4 overflow-y-auto space-y-4 no-scrollbar bg-[#FAF9F6] flex flex-col">
             {messages.map((m) => (
               <div
                 key={m.id}
@@ -278,7 +281,6 @@ export default function AiAdvisor() {
                 </div>
               </div>
             )}
-            <div ref={messagesEndRef} />
           </div>
 
           {/* Formulario de Entrada */}
